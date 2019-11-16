@@ -1,0 +1,106 @@
+---
+title: "Plotting_Phylogenies"
+output: html_document
+---
+
+## Load our libraries for plotting trees
+```{r setup, include=TRUE,echo=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+
+#load the required packages
+library(phytools)
+library(ggtree)
+library(ggplot2)
+
+```
+
+## Load trees and annotation tables
+
+```{r loaddata, include=TRUE}
+#load color definitions from a separate file so you only have to change them in one place
+source("../figure_colors.r")
+
+#load a table of strain information/phenotypes to plot on the tree
+datasettable <- read.table("./strainphenotypes.txt", sep = "\t", header=T, stringsAsFactors = F, quote = "")
+
+#load a tree file in newick or nexus tree format
+mytree <- read.tree("./myphylogeny.tre")
+
+#midpoint root the tree
+mytreemid<-phytools::midpoint.root(mytree)
+
+```
+
+## Plot a basic phylogeny with nothing on it
+
+ggtree can be used to plot a phylogeny.
+
+```{r basicphylorectangular, echo=TRUE,fig.height=12,fig.width=12}
+
+ggtree(mytreemid, ladderize = FALSE, layout="rectangular")
+
+```
+
+## Plot a basic phylogeny in circular representation
+
+```{r basicphylocircular, echo=TRUE,fig.height=12,fig.width=12}
+
+ggtree(mytreemid, ladderize = FALSE, layout="circular")
+
+```
+
+#   Plot a phylogeny with tip labels and bootstrap support values
+
+```{r phylotiplabel, echo=TRUE,fig.height=12,fig.width=12}
+
+ggtree(mytreemid, ladderize = FALSE, layout="circular") +           #plot the tree
+  geom_text2(aes(subset=!isTip, label=label),size=2) +              #add node labels
+  geom_tiplab2(aes(label=label,angle=angle),offset=0.01,size=4)     #add tip labels
+
+```
+
+##  Plot a phylogeny with colored points at the tips
+```{r phylotipcolor, echo=TRUE,fig.height=12,fig.width=12}
+
+ggtree(mytreemid, ladderize = FALSE, layout="circular") %<+% datasettable +     #plot the tree and load the annotation table
+    geom_text2(aes(subset=!isTip, label=label),size=2) +                        #add node labels with bootstrap support
+    geom_tippoint(aes(color=Genomospecies), size=3) +   #add colored points at tips colored by group from the annotation table
+    scale_fill_manual("Taxonomy", values=c("Unknown"="gray", "Unknown"="gray")) +    #set the fill colors to our taxonomy colors
+    scale_color_manual("Taxonomy",values = taxonomycolors) +                         #set the outline colors to our taxonomy colors
+    theme(legend.position=c(0.9, 0.2), plot.margin=unit(c(0.5,0.5,0.5,0.5),"cm"))    #add a legend with our taxonomic groups
+
+```
+
+
+##  Plot a phylogeny with a heatmap or gene presence/absence information
+
+```{r phyloheatmap, echo=TRUE,fig.height=12,fig.width=12}
+
+#load a gene presence/absence table
+genetable <- read.table("./genetable.txt", sep = "\t", header=T, stringsAsFactors = F, quote = "")
+
+#set the row names of the table to the strain column then remove it
+row.names(genetable) <- genetable$strain
+genetable$strain <- NULL
+genetable[]<-lapply(genetable,function(x) {factor(x,levels=c(1,0),labels=c("Present","Absent"))})
+
+#make new colors for the table
+genecolors<-c("dodgerblue3", "gray90")
+names(genecolors)<-c("Present","Absent")
+
+#combine all of the colors
+allcolors<-c(genecolors,taxonomycolors)
+
+#plot the tree and save it to a ggplot variable
+p<-ggtree(mytreemid, ladderize = FALSE, layout="circular") %<+% datasettable +
+    geom_text2(aes(subset=!isTip, label=label),size=2) +
+    geom_tippoint(aes(color=Genomospecies), size=3) +
+    scale_color_manual("Taxonomy",values = allcolors) +
+    theme(legend.position=c(0.9, 0.2), plot.margin=unit(c(0.5,0.5,0.5,0.5),"cm"))
+
+#plot the table as a heatmap along with the tree
+gheatmap(p, genetable, colnames=TRUE, colnames_offset_y=0, colnames_position="top", colnames_angle=90, font.size=2,width=0.3,color="black") + scale_fill_manual("Taxonomy",values = allcolors) 
+
+```
+
+Thats it!

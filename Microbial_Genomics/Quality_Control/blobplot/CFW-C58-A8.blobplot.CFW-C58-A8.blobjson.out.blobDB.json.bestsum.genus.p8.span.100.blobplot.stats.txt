@@ -1,0 +1,7 @@
+## blobtools v0.9.19.3
+## spades=/nfs1/BPP/Chang_Lab/SCRI/sequenced_03_11_2019/bbduk/fna/CFW-C58-A8.fna
+# name	colour	count_visible	count_visible_perc	span_visible	span_visible_perc	n50	gc_mean	gc_std	spades_mean	spades_std	spades_read_map	spades_read_map_p
+all	None	103	100.0%	10,016,100	100.0%	327,439	0.48	0.076	34.1	58.6	0	0.0%
+Agrobacterium	#1f77b4	26	100.0%	5,653,788	100.0%	452,482	0.59	0.026	97.7	80.1	0	0.0%
+Bacillus	#ff7f0e	76	100.0%	4,361,413	100.0%	113,889	0.45	0.052	12.0	24.0	0	0.0%
+unresolved	#d62728	1	100.0%	899	100.0%	899	0.41	0.0	58.6	0.0	0	0.0%

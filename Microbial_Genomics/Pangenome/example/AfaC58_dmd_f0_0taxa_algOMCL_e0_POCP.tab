@@ -1,0 +1,4 @@
+genomes	AS3D7.gbk	Afa_C58.gbk	Atu_Ach5.gbk
+AS3D7.gbk	100	72.62	79.53
+Afa_C58.gbk	72.62	100	76.28
+Atu_Ach5.gbk	79.53	76.28	100

@@ -1,0 +1,128 @@
+---
+title: "Plotting with ggplot2"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+source("../figure_colors.r")
+```
+
+## Scatterplot
+
+ggplot2 is really powerful. It allows you to build figures to your exact specifications and can automatically generate really nice looking graphs. Everything is build piece-meal and step-by-step. You can gradually add visualizations onto your figure.
+
+This example will use a built-in dataset with information on diamonds.
+
+```{r loaddiamonds, echo=TRUE}
+
+#load the built in diamonds table
+data(diamonds)
+
+#preview the first few lines of the diamonds table
+head(diamonds)
+
+```
+
+
+## Building a scatterplot
+
+
+```{r diamondscatter, echo=TRUE}
+
+ggplot(diamonds,aes(x=carat,y=price)) + geom_point(aes(color=clarity,alpha=0.2)) 
+
+```
+
+
+## Building a scatterplot
+
+
+```{r diamondscattermargin, echo=TRUE}
+library(ggExtra)
+
+p <- ggplot(diamonds,aes(x=carat,y=price)) + geom_point(aes(color=clarity,alpha=0.2)) 
+
+ggMarginal(p,type="histogram",fill="transparent")
+
+```
+
+
+## Tajima's D analysis
+We have calculated the Tajima's D measure of selection for each gene within different species groups. What are the patterns of selection within and between species? 
+
+```{r tajimaload, echo=TRUE}
+
+
+
+#read in the table
+tajimatable<-read.table("tajima_d.total.csv", header=TRUE, sep=",", stringsAsFactors=F)
+
+#take a look at the first few rows
+head(tajimatable)
+
+
+
+```
+
+
+## Plot Tajima's D as a box and whisker plot
+```{r tajimabox, echo=TRUE,fig.width=12,fig.height=12}
+
+
+
+ggplot(tajimatable, aes(x=Clade,y=D,fill=Clade)) + geom_boxplot()
+
+
+```
+
+
+## Plot Tajima's D as a box and whisker plot and color by our categories
+```{r tajimaboxcolor, echo=TRUE,fig.width=12,fig.height=12}
+
+
+
+ggplot(tajimatable, aes(x=Clade,y=D,fill=Clade)) + 
+  geom_boxplot() + 
+  scale_fill_manual("Taxonomy",values = taxonomycolors)
+
+
+```
+
+
+## Plot Tajima's D as a box and whisker plot and add individual points
+```{r tajimaboxpoint, echo=TRUE,fig.width=12,fig.height=12}
+
+
+
+ggplot(tajimatable, aes(x=Clade,y=D,fill=Clade)) + 
+  geom_boxplot() + 
+  geom_jitter(aes(color=Clade,alpha=0.1)) + 
+  scale_fill_manual("Taxonomy",values = taxonomycolors) +
+  scale_color_manual("Taxonomy",values = taxonomycolors)
+
+
+```
+
+## Plot Tajima's D as a violin plot instead
+```{r tajimaviolin, echo=TRUE,fig.width=12,fig.height=12}
+
+
+
+ggplot(tajimatable, aes(x=Clade,y=D,fill=Clade)) + 
+  geom_violin() + 
+  scale_fill_manual("Taxonomy",values = taxonomycolors)
+
+# Same figure but save as a pdf instead
+
+pdf("tajimatable.pdf",width=8,height=5)
+
+ggplot(tajimatable, aes(x=Clade,y=D,fill=Clade)) + 
+  geom_violin() + 
+  scale_fill_manual("Taxonomy",values = taxonomycolors)
+
+dev.off()
+
+```
+
