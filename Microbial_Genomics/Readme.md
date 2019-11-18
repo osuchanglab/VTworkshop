@@ -95,19 +95,19 @@ cd Genome_Assembly/Annotation
 ```
 cd ./ANI
 ``` 
- #setup databases for fastANI and run fastANI for all comparisons
+setup databases for fastANI and run fastANI for all comparisons
 ```
 ./setupfastANI.sh
 ``` 
- #convert the the ANI results from long pairwise format to a table
+ convert the the ANI results from long pairwise format to a table
 ```
 Rscript ./finish_ani_table.r
 ``` 
- #sort the ANI table to cluster similar strains
+ sort the ANI table to cluster similar strains
 ```
 ./sort_anitable.sh
 ``` 
- #annotate the table with species group designations
+ annotate the table with species group designations
 ```
 Rscript annotate_species.r
 ```
@@ -122,12 +122,12 @@ Rscript annotate_species.r
 ```
 cd Pangenome
 ```
- #place the annotated genomes you wish to analyze in the genomes folder
+ place the annotated genomes you wish to analyze in the genomes folder
 ```
 ./run_get_homologues.sh
 ```
-### final ortholog clusters are in ./genomes_homologues/genomes_nucl_OMCL/
- ### pangenome matrixes and analyses are in the same folder (start with pangenome_matrix...)
+ final ortholog clusters are in ./genomes_homologues/genomes_nucl_OMCL/
+  pangenome matrixes and analyses are in the same folder (start with pangenome_matrix...)
  ### Percentage of conserved proteins (POCP)
  get_homologues produces POCP output (-P option)
  file is ./genomes_homologues/   .POCP
@@ -138,16 +138,16 @@ cd Pangenome
 ```
 cd ./MLSA_Phylogeny
 ```
-### make a blast database of your genomes to analyze. Can include genomes downloaded from NCBI too
+make a blast database of your genomes to analyze. Can include genomes downloaded from NCBI too
 ```
 cat ./input_genomes/*.fna > inputgenomes.fna 
 makeblastdb -in inputgenomes.fna -dbtype nucl
 ```
-### run autoMLSA to  create concatenated gene alignment and partition with optimal models
+run autoMLSA to  create concatenated gene alignment and partition with optimal models
 ```
 ./runmlsaall.sh
 ```
-### run iqtree to make a phylogenetic tree
+run iqtree to make a phylogenetic tree
 ```
 ./run_iqtree.sh
 Rscript plot_tree.r
