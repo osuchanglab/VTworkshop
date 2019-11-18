@@ -114,8 +114,7 @@ Rscript annotate_species.r
 
 ## Ortholog clustering
  
- ### If you are running this from the virtual machine (downloaded from this github), you need to tell get_homologues to download
- ### the Pfam database. You only need to do this once and if you attended the workshop you do not need to run it.
+If you are running this from the virtual machine (downloaded from this github), you need to tell get_homologues to download the Pfam database. You only need to do this once and if you attended the workshop you do not need to run it.
 ```
 ~/Downloads/get_homologues-x86_64-20190805/install.pl
 ```
@@ -127,11 +126,12 @@ cd Pangenome
 ./run_get_homologues.sh
 ```
  final ortholog clusters are in ./genomes_homologues/genomes_nucl_OMCL/
-  pangenome matrixes and analyses are in the same folder (start with pangenome_matrix...)
+ pangenome matrixes and analyses are in the same folder (start with pangenome_matrix...)
  ### Percentage of conserved proteins (POCP)
  get_homologues produces POCP output (-P option)
- file is ./genomes_homologues/   .POCP
- alternatively run autoPOCP
+ This file is ./genomes_homologues/AfaC58_dmd_f0_0taxa_algOMCL_e0_POCP.tab
+ The file name will differ depending on your reference genome name and whether you use blast or diamond (dmd).
+ Alternatively run autoPOCP to calculate POCP on its own.
 # Phylogenetic trees
 
 ## MLSA phylogeny
