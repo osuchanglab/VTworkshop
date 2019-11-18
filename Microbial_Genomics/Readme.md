@@ -114,7 +114,7 @@ Rscript annotate_species.r
 
 ## Ortholog clustering
  
-If you are running this from the virtual machine (downloaded from this github), you need to tell get_homologues to download the Pfam database. You only need to do this once and if you attended the workshop you do not need to run it.
+If you re-downloaded the virtual machine after the workshop, you will need to tell get_homologues to download the Pfam database. You only need to do this once and if you still have your virtual machine from the workshop you do not need to run it again.
 ```
 ~/Downloads/get_homologues-x86_64-20190805/install.pl
 ```
